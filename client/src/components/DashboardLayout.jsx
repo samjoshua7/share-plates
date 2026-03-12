@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useSocket } from "../context/SocketContext";
 import { useTheme } from "../hooks/useTheme";
 import "./DashboardLayout.css";
 
@@ -46,10 +47,35 @@ const ROLE_COLORS = {
 export default function DashboardLayout({ children }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { socket } = useSocket();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [notifCount] = useState(3);
+  const [notifCount, setNotifCount] = useState(0);
+  const [toast, setToast] = useState(null);
+
+  // Global Socket Listener for Real-time Notifications
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNotification = (data) => {
+      setToast(data.message);
+      setNotifCount((prev) => prev + 1);
+
+      // Auto dismiss toast after 5 seconds
+      setTimeout(() => setToast(null), 5000);
+    };
+
+    socket.on("new_food_available", handleNotification);
+    socket.on("new_delivery_request", handleNotification);
+    socket.on("delivery_updated", handleNotification);
+
+    return () => {
+      socket.off("new_food_available", handleNotification);
+      socket.off("new_delivery_request", handleNotification);
+      socket.off("delivery_updated", handleNotification);
+    };
+  }, [socket]);
 
   const navItems = NAV_ITEMS[user?.role] || [];
   const roleColor = ROLE_COLORS[user?.role] || "var(--primary)";
@@ -168,6 +194,53 @@ export default function DashboardLayout({ children }) {
           {children}
         </main>
       </div>
+
+      {/* Realtime Toast Notification Overlay */}
+      {toast && (
+        <div 
+          style={{
+            position: "fixed",
+            bottom: "24px",
+            right: "24px",
+            backgroundColor: "var(--accent)",
+            color: "#fff",
+            padding: "16px 24px",
+            borderRadius: "var(--radius-md)",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            animation: "slideIn 0.3s ease-out forwards"
+          }}
+        >
+          <span style={{ fontSize: "1.2rem" }}>🔔</span>
+          <span style={{ fontWeight: "500" }}>{toast}</span>
+          <button 
+            onClick={() => setToast(null)}
+            style={{ 
+              background: "none", 
+              border: "none", 
+              color: "rgba(255,255,255,0.7)", 
+              marginLeft: "12px",
+              cursor: "pointer",
+              fontSize: "1rem" 
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
+// Add a quick keyframe for the toast animation to the bottom of the layout
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+`;
+document.head.appendChild(style);

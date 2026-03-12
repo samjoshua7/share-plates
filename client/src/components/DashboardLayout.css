@@ -4,6 +4,12 @@
   display: flex;
   min-height: 100vh;
   background: var(--bg-base);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* SIDEBAR */
@@ -114,7 +120,7 @@
 }
 
 .db-nav__item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
   color: var(--text-primary);
 }
 
@@ -327,12 +333,13 @@
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  transition: var(--transition);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
 .db-stat-card:hover {
-  border-color: rgba(22, 163, 74, 0.25);
-  transform: translateY(-2px);
+  border-color: rgba(22, 163, 74, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08), 0 0 15px var(--primary-glow);
 }
 
 .db-stat-card__icon {
@@ -378,12 +385,16 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: var(--transition);
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
 }
 
 .db-food-card:hover {
-  border-color: rgba(22, 163, 74, 0.25);
-  transform: translateY(-2px);
+  border-color: rgba(22, 163, 74, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1), 0 0 20px var(--primary-glow);
+  z-index: 2;
 }
 
 .db-food-card__header {

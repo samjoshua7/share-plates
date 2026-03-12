@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ["store", "shelter", "volunteer"],
+      enum: ["store", "shelter", "volunteer", "admin"],
     },
     phone: { type: String, required: true },
     address: { type: String, required: true },
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Hash password before saving
+// Hash password before saving 
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
@@ -38,5 +38,7 @@ userSchema.pre("save", async function () {
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+//
 
 module.exports = mongoose.model("User", userSchema);
