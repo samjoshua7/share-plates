@@ -7,6 +7,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
 
 dotenv.config();
 
@@ -17,11 +18,12 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("API Running");
+  res.send("Share Plates API Running");
 });
 
-// mount API routes
+// Mount API routes
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // Connect to DB first, then start server
 connectDB().then(() => {
