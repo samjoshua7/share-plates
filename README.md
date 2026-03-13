@@ -1,75 +1,316 @@
-# hackathon-project
-This repository contains the project files, which we created and won at internal hackathon conducted by our college. Our project was categorized under "Society & Social Care" category.
+# Share Plates
 
-## Environment Setup
-Before starting, ensure you have Node.js and npm installed.
+### *If your table has more than enough, pass a little joy around. Good food is meant to be shared.*
 
-### Important Notes:
-- **Do not commit sensitive files**: Files like `.env` (containing database credentials and secrets) are ignored by `.gitignore`. Never commit `.env` files to version control.
-- **Dependencies**: `node_modules/` directories are ignored. Run `npm install` in both `client/` and `server/` folders.
-- **Build outputs**: `dist/` and other build artifacts are ignored.
+This repository contains the project files for **Share Plates**, a food redistribution platform created during our college internal hackathon under the **Society & Social Care** category.
 
-## Quick start (React + MongoDB test)
+Our team secured **3rd Prize** in the competition.
 
-1. **Backend setup**
-   - Copy `server/.env.example` to `server/.env` and add your MongoDB connection string.
-     Follow the steps below to get this URI from Atlas.
+The platform connects:
 
-     ### Obtaining your Atlas connection string
-     1. Log in to [MongoDB Atlas](https://cloud.mongodb.com/) and select your project.
-     2. Under **Clusters** click **Connect** for `Cluster0` (or whatever yours is named).
-     3. Choose **Connect your application**.
-     4. Select **Node.js** and the driver version (latest is fine).
-     5. Atlas will show a URI similar to:
-        ```text
-        mongodb+srv://<username>:<password>@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority
-        ```
-     6. Replace `<username>`, `<password>`, and especially the database name (`mydatabase` in the example) with the **exact database name you intend to use**. In your Atlas screenshot the database is called `main`, so the URI should end with `/main?`.
-        If you leave a different name Atlas will create (or use) that other database, which is why you may see only the sample record even after manually inserting documents elsewhere.
+* **Store Owners** (who donate leftover food)
+* **Shelters / Needy Organizations** (who request food)
+* **Volunteers** (who deliver food)
 
-        Paste the full, corrected URI into `server/.env` as the `MONGO_URI` value.
+The goal is to reduce **food waste** while helping people in need.
 
-        ```env
-        MONGO_URI=mongodb+srv://myUser:secret123@cluster0.mongodb.net/main?retryWrites=true&w=majority
-        ```
-     7. (Optional) restart the server so the new `.env` value is used.
+---
 
-   > **Tip:** the enhanced `/api/users` handler now logs the name of the connected database and the documents returned. Check the backend console when you hit the endpoint to verify you're looking at the same DB/collection that Atlas is showing.
+# Current Deployment Architecture
 
-     > **Note**: you may need to
-     > - Add an IP whitelist entry under **Network Access** (`0.0.0.0/0` for testing),
-     > - Create a database user with a username/password under **Database Access**.
+The project is currently being upgraded for **public deployment**.
 
-     Example environment file:
-     ```env
-     MONGO_URI=mongodb+srv://myUser:secret123@cluster0.mongodb.net/mydb?retryWrites=true&w=majority
-     ```
-   - Install server dependencies and start the API:
-     ```powershell
-     cd server
-     npm install
-     npm run dev      # uses nodemon
-     # or "npm start" once you've verified everything works
-     ```
-   - The API listens on port 5000 by default and exposes:
-     * `GET /`            – simple health check
-     * `GET /api/users`   – returns user documents (auto‑seeds one if empty)
+We are moving from local development to a cloud architecture:
 
-2. **Client setup**
-   - From the root folder:
-     ```powershell
-     cd client
-     npm install
-     npm run dev
-     ```
-   - Open the Vite server (usually http://localhost:5173) and you should see a page
-     listing the user(s) fetched from MongoDB.
+Frontend
+Hosted on **Vercel**
 
-3. **Verify**
-   - When the frontend loads it will log network requests in the browser dev tools.
-   - The server console will print connection status messages from `server/config/db.js`.
-   - If the database is empty the first request to `/api/users` will insert a sample record
-     so you see something on the page.
+Backend API
+Hosted on **Render**
 
-This minimal setup proves that React can communicate with the Node/Express backend,
-and that the backend successfully reads from MongoDB.
+Database
+Hosted on **MongoDB Atlas**
+
+Architecture overview:
+
+Users
+↓
+Frontend (Vercel)
+↓
+Backend API (Render)
+↓
+MongoDB Atlas Database
+
+---
+
+# Development Status
+
+The project is actively being improved and stabilized for real-world usage.
+
+Developers are currently working on:
+
+* Fixing dashboard features for each user role
+* Improving food request workflow
+* Enhancing map integration
+* Implementing realtime notifications
+* Stabilizing volunteer delivery tracking
+* Improving UI and accessibility
+* Preparing the system for cloud deployment
+
+---
+
+# Environment Setup
+
+Before starting development, ensure the following tools are installed:
+
+* Node.js
+* npm
+* Git
+
+---
+
+# Important Notes
+
+### Sensitive files
+
+Never commit sensitive files.
+
+Files like `.env` contain database credentials and secrets.
+
+These files are already ignored by `.gitignore`.
+
+Never upload `.env` to GitHub.
+
+---
+
+### Dependencies
+
+`node_modules/` folders are ignored.
+
+Install dependencies manually:
+
+```
+cd server
+npm install
+
+cd client
+npm install
+```
+
+---
+
+### Build outputs
+
+The following folders are ignored:
+
+```
+dist/
+build/
+node_modules/
+```
+
+These files are generated automatically.
+
+---
+
+# Quick Start (React + MongoDB Test)
+
+## 1. Backend Setup
+
+Copy the example environment file:
+
+```
+server/.env.example → server/.env
+```
+
+Add your MongoDB connection string.
+
+---
+
+### Obtaining your MongoDB Atlas connection string
+
+1. Log in to MongoDB Atlas
+2. Select your project
+3. Go to **Clusters**
+4. Click **Connect**
+5. Select **Connect your application**
+6. Choose **Node.js**
+
+Atlas will provide a connection string like:
+
+```
+mongodb+srv://<username>:<password>@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority
+```
+
+Replace:
+
+* `<username>`
+* `<password>`
+* `mydatabase`
+
+Example:
+
+```
+MONGO_URI=mongodb+srv://myUser:secret123@cluster0.mongodb.net/main?retryWrites=true&w=majority
+```
+
+Paste this into:
+
+```
+server/.env
+```
+
+---
+
+### Start Backend Server
+
+```
+cd server
+npm install
+npm run dev
+```
+
+The API runs on:
+
+```
+http://localhost:5000
+```
+
+Available endpoints:
+
+```
+GET /
+GET /api/users
+```
+
+---
+
+## 2. Client Setup
+
+```
+cd client
+npm install
+npm run dev
+```
+
+Open:
+
+```
+http://localhost:5173
+```
+
+The page should load user data fetched from MongoDB.
+
+---
+
+## 3. Verification
+
+Check:
+
+Browser DevTools → Network tab
+Backend console logs
+MongoDB Atlas collections
+
+If the database is empty, the backend automatically inserts a **sample user**.
+
+---
+
+# Contribution Guidelines
+
+⚠ Important for contributors.
+
+This repository uses **protected branches**.
+
+The `main` branch **cannot be modified directly**.
+
+---
+
+## Correct Workflow
+
+Never push directly to `main`.
+
+Instead follow this process.
+
+### 1 Create a feature branch
+
+```
+git checkout -b feature-your-change
+```
+
+### 2 Commit your changes
+
+You may use VS Code commit tools.
+
+```
+git add .
+git commit -m "describe your change"
+```
+
+### 3 Push your branch
+
+```
+git push origin feature-your-change
+```
+
+### 4 Create a Pull Request
+
+Open a **Pull Request** on GitHub.
+
+The repository owner will review and merge it.
+
+---
+
+# Important for AI Assisted Development
+
+Many contributors may use AI tools.
+
+If using AI:
+
+* Do NOT modify core server configuration.
+* Do NOT modify database schemas without discussion.
+* Do NOT push directly to `main`.
+
+AI generated code must still follow the **branch → PR → review** workflow.
+
+---
+
+# Common Mistakes to Avoid
+
+Never commit:
+
+```
+.env
+node_modules
+dist
+build
+```
+
+Never push directly to:
+
+```
+main
+```
+
+Always create a **feature branch first**.
+
+---
+
+# Future Roadmap
+
+Upcoming improvements include:
+
+* Smart food availability tracking
+* Route optimization for volunteers
+* Mobile responsive UI improvements
+* Realtime delivery updates
+* Food analytics dashboard
+* Improved map-based request system
+
+---
+
+# Acknowledgement
+
+This project was created during our college hackathon and continues to evolve as we improve it for real-world impact.
+
+Food is meant to be shared.
+Let's reduce waste and help communities together.
