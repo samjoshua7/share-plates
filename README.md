@@ -1,6 +1,14 @@
 # hackathon-project
 This repository contains the project files, which we created and won at internal hackathon conducted by our college. Our project was categorized under "____________________" category.
 
+## Environment Setup
+Before starting, ensure you have Node.js and npm installed.
+
+### Important Notes:
+- **Do not commit sensitive files**: Files like `.env` (containing database credentials and secrets) are ignored by `.gitignore`. Never commit `.env` files to version control.
+- **Dependencies**: `node_modules/` directories are ignored. Run `npm install` in both `client/` and `server/` folders.
+- **Build outputs**: `dist/` and other build artifacts are ignored.
+
 ## Quick start (React + MongoDB test)
 
 1. **Backend setup**
