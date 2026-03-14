@@ -1,13 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useAuth } from "./AuthContext";
+import API_BASE from "../config/api.js";
 
 const SocketContext = createContext();
 
 // Define backend address dynamically
-const SOCKET_URL = import.meta.env.VITE_API_URL 
-  ? import.meta.env.VITE_API_URL.replace("/api", "") 
-  : "/";
+const SOCKET_URL = API_BASE;
 
 export const SocketProvider = ({ children }) => {
   const { user } = useAuth();
