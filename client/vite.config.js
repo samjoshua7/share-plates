@@ -7,12 +7,12 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://localhost:5000", // for renderer server -- only for publishing
+        target: "shareplates-api.onrender.com", // for renderer server -- only for publishing
         //target: "http://localhost:5000", // for local development -- use for testing and building
         changeOrigin: true
       },
       "/socket.io": {
-        target: "http://localhost:5000", // for renderer server -- only for publishing
+        target: "shareplates-api.onrender.com", // for renderer server -- only for publishing
         //target: "http://localhost:5000", // for local development -- use for testing and building
         ws: true
       }
